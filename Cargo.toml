@@ -14,10 +14,10 @@ multitask = ["axtask/multitask"]
 default = []
 
 [dependencies]
-spinlock = { path = "../../crates/spinlock" }
-axtask = { path = "../axtask" }
+spinlock = { git = "https://github.com/Starry-OS/spinlock.git" }
+axtask = { git = "https://github.com/Starry-OS/axtask.git" }
 
 [dev-dependencies]
 rand = "0.8"
-axsync = { path = ".", features = ["multitask"] }
-axtask = { path = "../axtask", features = ["test"] }
+axsync = { git = "https://github.com/Starry-OS/axsync.git", features = ["multitask"] }
+axtask = { git = "https://github.com/Starry-OS/axtask.git", features = ["test"] }
