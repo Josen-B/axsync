@@ -13,16 +13,24 @@
 
 #![cfg_attr(not(test), no_std)]
 #![feature(doc_cfg)]
+cfg_if::cfg_if! {
+    if #[cfg(feature = "multitask")] {
+        #[macro_use]
+        extern crate axtask;
+        extern crate alloc;
+           
+        mod mutex;
+        mod completion;
+            
+        pub use self::completion::Completion;
+            
+        #[doc(cfg(feature = "multitask"))]
+        pub use self::mutex::{Mutex, MutexGuard};
+    } else {
+        #[doc(cfg(not(feature = "multitask")))]
+        pub use spinlock::{SpinNoIrq as Mutex, SpinNoIrqGuard as MutexGuard};
+    }
+}
 
 pub use spinlock as spin;
 
-#[cfg(feature = "multitask")]
-mod mutex;
-
-#[cfg(feature = "multitask")]
-#[doc(cfg(feature = "multitask"))]
-pub use self::mutex::{Mutex, MutexGuard};
-
-#[cfg(not(feature = "multitask"))]
-#[doc(cfg(not(feature = "multitask")))]
-pub use spinlock::{SpinNoIrq as Mutex, SpinNoIrqGuard as MutexGuard};
